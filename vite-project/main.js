@@ -59,9 +59,51 @@ function addStar() {
 
 Array(200).fill().forEach(addStar)
 
-const spaceTexture = new THREE.TextureLoader().load('dna.jpg');
+const spaceTexture = new THREE.TextureLoader().load('future.jpg');
 scene.background = spaceTexture;
 
+const syringeTexture = new THREE.TextureLoader().load('dev.jpg');
+const syringe = new THREE.Mesh(
+  new THREE.BoxGeometry(3, 3, 3), 
+  new THREE.MeshBasicMaterial({ map: syringeTexture }));
+scene.add(syringe);
+
+
+const moonTexture = new THREE.TextureLoader().load('momp.jpg');
+const normalTexture = new THREE.TextureLoader().load('dnatex.jpg');
+
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture,
+  })
+);
+
+scene.add(moon);
+
+moon.position.z = 30;
+moon.position.setX(-10);
+
+syringe.position.z = -5;
+syringe.position.x = 2;
+
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+  moon.rotation.x += 0.05;
+  moon.rotation.y += 0.075;
+  moon.rotation.z += 0.05;
+
+  syringe.rotation.y += 0.01;
+  syringe.rotation.z += 0.01;
+
+  camera.position.z = t * -0.01;
+  camera.position.x = t * -0.0002;
+  camera.rotation.y = t * -0.0002;
+}
+
+document.body.onscroll = moveCamera;
+moveCamera();
 
 
 function animate() {
